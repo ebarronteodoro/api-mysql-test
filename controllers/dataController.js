@@ -30,29 +30,29 @@ export function getUser(req, res) {
 }
 
 export function createUser(req, res) {
-  const { name, email } = req.body;
+  const { name, last_name, age } = req.body;
   const pool = getPool();
-  pool.query('INSERT INTO users (name, email) VALUES (?, ?)', [name, email], (err, results) => {
+  pool.query('INSERT INTO users (name, last_name, age) VALUES (?, ?, ?)', [name, last_name, age], (err, results) => {
     if (err) {
       console.error('Error creating user:', err);
       res.status(500).send('Server error');
       return;
     }
-    res.status(201).json({ id_user: results.insertId, name, email });
+    res.status(201).json({ id_user: results.insertId, name, last_name, age });
   });
 }
 
 export function updateUser(req, res) {
   const userId = req.params.id_user;
-  const { name, email } = req.body;
+  const { name, last_name, age } = req.body;
   const pool = getPool();
-  pool.query('UPDATE users SET name = ?, email = ? WHERE id_user = ?', [name, email, userId], (err, results) => {
+  pool.query('UPDATE users SET name = ?, last_name = ?, age = ? WHERE id_user = ?', [name, last_name, age, userId], (err, results) => {
     if (err) {
       console.error('Error updating user:', err);
       res.status(500).send('Server error');
       return;
     }
-    res.status(200).json({ id_user: userId, name, email });
+    res.status(200).json({ id_user: userId, name, last_name, age });
   });
 }
 
